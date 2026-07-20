@@ -1,7 +1,17 @@
 ---
 name: citation-verification
-description: Verify that every material clinical claim is supported by the cited source at the required level of specificity. Ensures claim-to-source traceability and prevents citation hallucination.
+description: Verify that every material claim is supported by the cited source at
+  the required level of specificity.
+trigger: Verify that every material claim is supported by the cited source at the
+  required level of specificity.
+tags:
+- medical-research
+- evidence
 ---
+
+> Source of truth: `skills/citation-verification/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/citation-verification/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: citation-verification
 
@@ -80,3 +90,4 @@ Allowed remediation:
 - numerical mismatch that changes interpretation;
 - retracted evidence used positively without explicit historical context;
 - unsupported regulatory approval claim.
+

@@ -1,7 +1,17 @@
 ---
 name: evidence-synthesis
-description: Combine appraised evidence into calibrated, traceable conclusions without flattening disagreement, uncertainty, or evidence maturity. Use after evidence extraction and appraisal.
+description: Combine appraised evidence into calibrated, traceable conclusions without
+  flattening disagreement, uncertainty, or differences in evidence maturity.
+trigger: Combine appraised evidence into calibrated, traceable conclusions without
+  flattening disagreement, uncertainty, or differences in evidence maturity.
+tags:
+- medical-research
+- evidence
 ---
+
+> Source of truth: `skills/evidence-synthesis/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/evidence-synthesis/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: evidence-synthesis
 
@@ -81,3 +91,4 @@ A material claim cannot pass when:
 - contradiction map;
 - uncertainty/gap list;
 - recommendations for additional research when needed.
+

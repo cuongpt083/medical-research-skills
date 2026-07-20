@@ -1,7 +1,17 @@
 ---
 name: evidence-extraction
-description: Transform source documents into structured, source-traceable evidence facts without interpretation drift. Extract reported facts, outcomes, sample sizes, and locators before synthesizing.
+description: Transform source documents into structured, source-traceable evidence
+  facts without interpretation drift.
+trigger: Transform source documents into structured, source-traceable evidence facts
+  without interpretation drift.
+tags:
+- medical-research
+- evidence
 ---
+
+> Source of truth: `skills/evidence-extraction/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/evidence-extraction/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: evidence-extraction
 
@@ -111,3 +121,4 @@ Low-confidence critical facts must be routed to manual/secondary verification.
 - translate statistical significance into clinical importance;
 - merge multiple time points into one result;
 - silently prefer abstract values over corrected/full-text values.
+

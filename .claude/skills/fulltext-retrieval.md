@@ -1,7 +1,19 @@
 ---
 name: fulltext-retrieval
-description: Resolve the best accessible full-text representation of candidate sources while preserving identity, version, provenance, and access limitations. Use when detailed evidence extraction, numerical verification, or risk-of-bias appraisal is needed.
+description: Resolve the best legally/technically accessible representation of a candidate
+  source while preserving identity, version, provenance, and access limitations.
+trigger: 'Invoke when a downstream task requires more than bibliographic metadata/abstract,
+  including: - structured evidence extraction; - verification of a numerical or methodological
+  claim; - risk-of-bias appraisal; - guideline recommendation extraction; - regulatory
+  wording verification.'
+tags:
+- medical-research
+- evidence
 ---
+
+> Source of truth: `skills/fulltext-retrieval/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/fulltext-retrieval/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: fulltext-retrieval
 
@@ -105,3 +117,4 @@ Persist:
 - identity checks;
 - access limitation;
 - whether extraction used full text, partial text, or abstract only.
+

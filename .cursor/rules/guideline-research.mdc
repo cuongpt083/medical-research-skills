@@ -1,7 +1,15 @@
 ---
-name: guideline-research
-description: Locate, verify, compare, and extract current authoritative clinical practice guidance relevant to a medical question. Use for standard-of-care, recommended management, diagnosis, screening, and treatment pathways.
+description: Locate, verify, compare, and extract current authoritative clinical guidance
+  relevant to a medical question.
+globs: []
+alwaysApply: false
 ---
+
+**Trigger:** Use for standard-of-care, recommended management, screening, diagnosis, prevention, treatment pathway, monitoring, or “what do current guidelines say?” questions.
+
+> Source of truth: `skills/guideline-research/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/guideline-research/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: guideline-research
 
@@ -137,3 +145,4 @@ Do not invent “Class I / Level A” when the guideline does not use that schem
 - Normalize provider-specific records before downstream reasoning.
 - Do not fabricate identifiers, metadata, access status, publication status, or study results.
 - Mark uncertainty explicitly; absence of evidence is not evidence of absence.
+

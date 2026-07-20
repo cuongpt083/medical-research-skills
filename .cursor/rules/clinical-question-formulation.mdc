@@ -1,7 +1,15 @@
 ---
-name: clinical-question-formulation
-description: Transform a medical information need into a precise, researchable evidence question (PICO/PEO/PICOT) without introducing bias or false assumptions. Use before evidence retrieval when questions are clinical, therapeutic, diagnostic, prognostic, etiologic, safety, or drug-related.
+description: Transform a medical information need into a precise, researchable evidence
+  question without introducing assumptions that distort the user's intent.
+globs: []
+alwaysApply: false
 ---
+
+**Trigger:** Invoke before evidence retrieval when: - the question is clinical, therapeutic, diagnostic, prognostic, etiologic, safety-related, or drug-related; - the request is broad enough that evidence selection depends on clarification/normalization; - multiple interpretations would lead to different source strategies.
+
+> Source of truth: `skills/clinical-question-formulation/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/clinical-question-formulation/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: clinical-question-formulation
 
@@ -173,3 +181,4 @@ Required dimensions: product/formulation, indication, jurisdiction, population, 
 ### Example C — Mechanism
 Input: “GLP-1 receptor agonist hoạt động thế nào?”
 Do not force PICO. Use concept-map formulation and retrieve authoritative pharmacology/mechanism sources.
+

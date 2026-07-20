@@ -1,7 +1,17 @@
 ---
 name: medical-safety-guardrail
-description: Apply final safety and epistemic-governance gate before medical research output is delivered. Ensures appropriate framing, safety disclaimers, evidence maturity warnings, and non-clinical authority posture.
+description: Apply a final safety and epistemic-governance gate before medical research
+  output is delivered.
+trigger: Apply a final safety and epistemic-governance gate before medical research
+  output is delivered.
+tags:
+- medical-research
+- evidence
 ---
+
+> Source of truth: `skills/medical-safety-guardrail/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/medical-safety-guardrail/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: medical-safety-guardrail
 
@@ -74,3 +84,4 @@ Use `BLOCK_UNTIL_VERIFIED` when:
 - State what is known, uncertain, and not established.
 - Do not hide behind a generic disclaimer when a specific evidence limitation can be explained.
 - Do not imply that a disclaimer makes an unsupported recommendation acceptable.
+

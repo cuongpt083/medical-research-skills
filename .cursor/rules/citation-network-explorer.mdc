@@ -1,7 +1,15 @@
 ---
-name: citation-network-explorer
-description: Expand a research landscape from seed papers using citation relationships (forward/backward citations, co-citations) and semantic similarity while controlling graph-induced bias. Use when landmark papers are known or keyword search is incomplete.
+description: Expand a research landscape from one or more seed papers using citation
+  relationships and similarity signals while controlling graph-induced bias.
+globs: []
+alwaysApply: false
 ---
+
+**Trigger:** Use when: - a landmark/seed paper is known; - keyword search appears incomplete; - historical evidence evolution matters; - related clusters or follow-up studies are needed; - searching for replications, critiques, or later evidence.
+
+> Source of truth: `skills/citation-network-explorer/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/citation-network-explorer/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: citation-network-explorer
 
@@ -128,3 +136,4 @@ A dense cluster from one research group should trigger independent search rather
 - Normalize provider-specific records before downstream reasoning.
 - Do not fabricate identifiers, metadata, access status, publication status, or study results.
 - Mark uncertainty explicitly; absence of evidence is not evidence of absence.
+

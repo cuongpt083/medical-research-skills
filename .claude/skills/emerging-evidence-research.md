@@ -1,7 +1,18 @@
 ---
 name: emerging-evidence-research
-description: Detect, track, and contextualize early or evolving medical evidence without overstating maturity. Use for active clinical trials, pipeline drugs, preprints, conference findings, and horizon scanning.
+description: Detect, track, and contextualize early or evolving medical evidence without
+  overstating maturity.
+trigger: 'Use for: - “latest/newest” treatments or research; - active clinical trials;
+  - pipeline drugs; - preprints; - conference findings; - early-online evidence; -
+  horizon scanning.'
+tags:
+- medical-research
+- evidence
 ---
+
+> Source of truth: `skills/emerging-evidence-research/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/emerging-evidence-research/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: emerging-evidence-research
 
@@ -131,3 +142,4 @@ A company press release without inspectable study data cannot be treated as equi
 - Normalize provider-specific records before downstream reasoning.
 - Do not fabricate identifiers, metadata, access status, publication status, or study results.
 - Mark uncertainty explicitly; absence of evidence is not evidence of absence.
+

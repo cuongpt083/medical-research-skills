@@ -1,7 +1,17 @@
 ---
 name: evidence-source-selection
-description: Select source classes (peer-reviewed, guidelines, regulatory, trials, preprints) and retrieval order fit for the question, evidence purpose, clinical stakes, and recency requirements. Invoke after question formulation and before research execution.
+description: Select source classes and retrieval order that are fit for the question,
+  evidence purpose, clinical stakes, and recency requirements. The skill selects capabilities/source
+  classes, not favorite websites.
+trigger: Invoke after question formulation and before research execution.
+tags:
+- medical-research
+- evidence
 ---
+
+> Source of truth: `skills/evidence-source-selection/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/evidence-source-selection/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: evidence-source-selection
 
@@ -191,3 +201,4 @@ Expected: mixed broad discovery + horizon scanning; trials and recent peer-revie
 
 ### T4 — “Tìm full text của bài PMID ...”
 Expected: access/full-text source plan only; no implication that repository choice changes evidence quality.
+

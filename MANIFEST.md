@@ -1,5 +1,6 @@
 # Package Manifest
 
+- `.gitignore`
 - `ACCEPTANCE_CRITERIA.md`
 - `AGENT_RUNTIME_AND_WORKFLOW.md`
 - `ARCHITECTURE.md`
@@ -9,10 +10,18 @@
 - `FINAL_IMPLEMENTATION_PLAN.md`
 - `FINAL_REPORT_SPEC.md`
 - `IMPLEMENTATION_PLAN.md`
+- `MANIFEST.md`
 - `MIGRATION_GUIDE.md`
 - `README.md`
 - `README_FINAL.md`
 - `VERSION.md`
+- `agent-skills.yaml`
+- `pyproject.toml`
+- `.cursor/rules.md`
+- `.cursor/rules/*.mdc`
+- `.claude/CLAUDE.md`
+- `.claude/skills/*.md`
+- `.github/copilot-instructions.md`
 - `contracts/core-contracts.yaml`
 - `contracts/evidence-governance-contracts.yaml`
 - `contracts/execution-contracts.yaml`
@@ -35,6 +44,7 @@
 - `execution/runtime/__init__.py`
 - `execution/runtime/provider_base.py`
 - `execution/runtime/runtime-policy.yaml`
+- `scripts/build-agent-configs.py`
 - `skills/citation-network-explorer/SKILL.md`
 - `skills/citation-verification/SKILL.md`
 - `skills/clinical-question-formulation/SKILL.md`
@@ -53,3 +63,5 @@
 - `tests/execution-tooling-test-cases.md`
 - `tests/foundation-test-cases.md`
 - `tests/research-engine-test-cases.md`
+- `tests/test_agent_config.py`
+- `tests/test_contracts_and_execution.py`

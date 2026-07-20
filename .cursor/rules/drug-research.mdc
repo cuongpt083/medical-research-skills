@@ -1,7 +1,15 @@
 ---
-name: drug-research
-description: Produce verified drug and biologic therapeutic intelligence by separating regulatory facts, labeling, safety, efficacy evidence, contraindications, and off-label/investigational status. Use for approval, indication, dosing, safety warnings, and drug interactions.
+description: Produce verified drug/biologic therapeutic intelligence by separating
+  regulatory facts, labeling, safety, efficacy evidence, and investigational status.
+globs: []
+alwaysApply: false
 ---
+
+**Trigger:** Use for questions about: - approval/authorization; - indication; - dosing/administration; - contraindications/warnings; - safety signals; - interactions; - efficacy; - off-label or investigational uses; - new drugs or label expansions.
+
+> Source of truth: `skills/drug-research/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/drug-research/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: drug-research
 
@@ -161,3 +169,4 @@ Missing renal function for a renal-sensitive drug should trigger caution/review,
 - Normalize provider-specific records before downstream reasoning.
 - Do not fabricate identifiers, metadata, access status, publication status, or study results.
 - Mark uncertainty explicitly; absence of evidence is not evidence of absence.
+

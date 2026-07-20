@@ -1,0 +1,150 @@
+schema_version: '1.0'
+project: medical-research-skills
+description: Composable medical-research skill system for AI-assisted literature review, drug intelligence, guideline lookup,
+  and evidence synthesis.
+skills:
+- id: citation-network-explorer
+  name: Citation Network Explorer
+  description: Expand a research landscape from one or more seed papers using citation relationships and similarity signals
+    while controlling graph-induced bias.
+  trigger: 'Use when: - a landmark/seed paper is known; - keyword search appears incomplete; - historical evidence evolution
+    matters; - related clusters or follow-up studies are needed; - searching for replications, critiques, or later evidence.'
+  source: skills/citation-network-explorer/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: citation-verification
+  name: Citation Verification
+  description: Verify that every material claim is supported by the cited source at the required level of specificity.
+  trigger: ''
+  source: skills/citation-verification/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: clinical-question-formulation
+  name: Clinical Question Formulation
+  description: Transform a medical information need into a precise, researchable evidence question without introducing assumptions
+    that distort the user's intent.
+  trigger: 'Invoke before evidence retrieval when: - the question is clinical, therapeutic, diagnostic, prognostic, etiologic,
+    safety-related, or drug-related; - the request is broad enough that evidence selection depends on clarification/normalization;
+    - multiple interpretations would lead to different source strategies.'
+  source: skills/clinical-question-formulation/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: drug-research
+  name: Drug Research
+  description: Produce verified drug/biologic therapeutic intelligence by separating regulatory facts, labeling, safety, efficacy
+    evidence, and investigational status.
+  trigger: 'Use for questions about: - approval/authorization; - indication; - dosing/administration; - contraindications/warnings;
+    - safety signals; - interactions; - efficacy; - off-label or investigational uses; - new drugs or label expansions.'
+  source: skills/drug-research/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: emerging-evidence-research
+  name: Emerging Evidence Research
+  description: Detect, track, and contextualize early or evolving medical evidence without overstating maturity.
+  trigger: 'Use for: - “latest/newest” treatments or research; - active clinical trials; - pipeline drugs; - preprints; -
+    conference findings; - early-online evidence; - horizon scanning.'
+  source: skills/emerging-evidence-research/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: evidence-appraisal
+  name: Evidence Appraisal
+  description: Evaluate methodological credibility and applicability of each evidence item using question- and design-appropriate
+    criteria.
+  trigger: ''
+  source: skills/evidence-appraisal/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: evidence-extraction
+  name: Evidence Extraction
+  description: Transform source documents into structured, source-traceable evidence facts without interpretation drift.
+  trigger: ''
+  source: skills/evidence-extraction/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: evidence-source-selection
+  name: Evidence Source Selection
+  description: Select source classes and retrieval order that are fit for the question, evidence purpose, clinical stakes,
+    and recency requirements. The skill selects capabilities/source classes, not favorite websites.
+  trigger: Invoke after question formulation and before research execution.
+  source: skills/evidence-source-selection/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: evidence-synthesis
+  name: Evidence Synthesis
+  description: Combine appraised evidence into calibrated, traceable conclusions without flattening disagreement, uncertainty,
+    or differences in evidence maturity.
+  trigger: ''
+  source: skills/evidence-synthesis/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: fulltext-retrieval
+  name: Fulltext Retrieval
+  description: Resolve the best legally/technically accessible representation of a candidate source while preserving identity,
+    version, provenance, and access limitations.
+  trigger: 'Invoke when a downstream task requires more than bibliographic metadata/abstract, including: - structured evidence
+    extraction; - verification of a numerical or methodological claim; - risk-of-bias appraisal; - guideline recommendation
+    extraction; - regulatory wording verification.'
+  source: skills/fulltext-retrieval/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: guideline-research
+  name: Guideline Research
+  description: Locate, verify, compare, and extract current authoritative clinical guidance relevant to a medical question.
+  trigger: Use for standard-of-care, recommended management, screening, diagnosis, prevention, treatment pathway, monitoring,
+    or “what do current guidelines say?” questions.
+  source: skills/guideline-research/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: literature-search
+  name: Literature Search
+  description: Discover biomedical scholarly evidence with a reproducible, auditable, recall-aware search process. This skill
+    finds candidate evidence. It does not perform final methodological appraisal or clinical recommendation.
+  trigger: Use when the source plan requires primary studies, systematic reviews, meta-analyses, diagnostic studies, prognostic
+    cohorts, epidemiologic evidence, or scholarly background literature.
+  source: skills/literature-search/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: medical-safety-guardrail
+  name: Medical Safety Guardrail
+  description: Apply a final safety and epistemic-governance gate before medical research output is delivered.
+  trigger: ''
+  source: skills/medical-safety-guardrail/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+- id: research-orchestrator
+  name: Research Orchestrator
+  description: Coordinate an end-to-end medical research case from user intent to a verified evidence report. This skill is
+    the control plane. It does not replace specialist skills and must not directly invent medical conclusions.
+  trigger: 'Use when a request requires one or more of: - medical literature research; - clinical evidence comparison; - guideline
+    lookup; - drug/therapeutic intelligence; - emerging evidence or trial tracking; - evidence synthesis with citations; -
+    appraisal of conflicting medical claims. Do not invoke for simple non-research tasks such as rewriting provided text or
+    explaining a stable basic concept that does not require evidence retrieval.'
+  source: skills/research-orchestrator/SKILL.md
+  tags:
+  - medical-research
+  - evidence
+platforms:
+  cursor:
+    root_rule: .cursor/rules.md
+    per_skill_rules: .cursor/rules/*.mdc
+  claude_code:
+    project_context: .claude/CLAUDE.md
+    per_skill_skills: .claude/skills/*.md
+  github_copilot:
+    instructions: .github/copilot-instructions.md
+governance:
+  source_of_truth: skills/*/SKILL.md
+  regenerate_command: python scripts/build-agent-configs.py

@@ -96,3 +96,45 @@ identity/version resolution, retry/rate-limit/cache/privacy policies and tests.
 Skills → capability interfaces → provider adapters
 → normalized records + provenance → evidence pipeline
 ```
+
+## Using with AI coding agents
+
+This repository ships with project-level rules and a machine-readable skill manifest so agents such as Cursor, Claude, GitHub Copilot / Codex, and Google Antigravity can follow the framework automatically.
+
+| Platform | File(s) | How it works |
+|---|---|---|
+| **Cursor** | `.cursor/rules.md` + `.cursor/rules/*.mdc` | Cursor reads `rules.md` automatically; per-skill `.mdc` files are available for detailed context. |
+| **Claude Code** | `.claude/CLAUDE.md` + `.claude/skills/*.md` | `CLAUDE.md` provides project context; individual `.claude/skills/*.md` files are explicit skills Claude can invoke. |
+| **GitHub Copilot / Codex** | `.github/copilot-instructions.md` | Copilot/Codex pulls these instructions when generating or editing code in this repo. |
+| **Google Antigravity / other SDKs** | `agent-skills.yaml` | Machine-readable manifest of every skill, trigger, and source file. Consume it to build tool registrations or agent skills. |
+
+### Regenerating agent configs
+
+The files in `.claude/skills/`, `.cursor/rules/`, and `agent-skills.yaml` are generated from `skills/*/SKILL.md` so there is one source of truth.
+
+```bash
+python scripts/build-agent-configs.py
+```
+
+### Running tests
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # .venv\Scripts\activate on Windows
+pip install -e ".[dev]"
+pytest
+```
+
+## Repository layout
+
+```text
+skills/<skill>/SKILL.md          # Source-of-truth skill specifications
+contracts/*.yaml                 # Shared data contracts
+tests/                           # Regression and config validation tests
+scripts/build-agent-configs.py   # Sync agent configs from SKILL.md
+agent-skills.yaml                # Cross-platform machine-readable manifest
+.cursor/rules.md                 # Cursor project rules
+.claude/CLAUDE.md                # Claude Code project context
+.github/copilot-instructions.md  # Copilot/Codex instructions
+```
+

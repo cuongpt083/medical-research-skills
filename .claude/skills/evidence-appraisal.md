@@ -1,7 +1,17 @@
 ---
 name: evidence-appraisal
-description: Evaluate methodological credibility, risk of bias, internal validity, and applicability of evidence items using study design-appropriate criteria (e.g. ROBINS-I, RoB 2, AGREE II).
+description: Evaluate methodological credibility and applicability of each evidence
+  item using question- and design-appropriate criteria.
+trigger: Evaluate methodological credibility and applicability of each evidence item
+  using question- and design-appropriate criteria.
+tags:
+- medical-research
+- evidence
 ---
+
+> Source of truth: `skills/evidence-appraisal/SKILL.md`
+>
+> This file is auto-generated. Edit `skills/evidence-appraisal/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
 # Skill: evidence-appraisal
 
@@ -82,3 +92,4 @@ A local `confidence` label must be named and described as an internal evidence-c
 
 ## Abstention
 Return `APPRAISAL_INSUFFICIENT_INFORMATION` when critical methodological information is unavailable rather than guessing.
+
