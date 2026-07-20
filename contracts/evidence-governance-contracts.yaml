@@ -1,0 +1,51 @@
+version: 0.4
+contracts:
+  DocumentArtifact:
+    required: [evidence_id, status, canonical_identity, provenance]
+    status_enum: [full_text, partial_text, abstract_only, unavailable]
+
+  ExtractedFact:
+    required: [id, evidence_id, field, value, source_locator, extraction_confidence]
+    extraction_confidence_enum: [high, moderate, low]
+
+  Appraisal:
+    required: [evidence_id, design, domains, overall_risk_of_bias, directness, precision, applicability, appraisal_confidence]
+
+  Claim:
+    required:
+      - id
+      - text
+      - claim_type
+      - supporting_evidence_ids
+      - contradicting_evidence_ids
+      - confidence
+      - evidence_maturity
+      - verification_status
+
+  CitationVerification:
+    required: [claim_id, status, checks, verified_evidence_ids, rejected_evidence_ids]
+    status_enum: [verified, partially_verified, failed, unverifiable]
+
+  SafetyReview:
+    required: [disposition, risk_level, required_caveats, blocked_claim_ids, reasons]
+    disposition_enum:
+      - SAFE_TO_PUBLISH
+      - PUBLISH_WITH_CAVEATS
+      - CLINICIAN_REVIEW_REQUIRED
+      - BLOCK_UNTIL_VERIFIED
+
+invariants:
+  - id: INV-001
+    rule: Every material claim must reference at least one supporting evidence item.
+  - id: INV-002
+    rule: Every numerical material claim must trace to an ExtractedFact locator or an explicitly documented derived calculation.
+  - id: INV-003
+    rule: No failed or unverifiable material claim may be emitted as established fact.
+  - id: INV-004
+    rule: Regulatory claims require authoritative regulatory provenance.
+  - id: INV-005
+    rule: Preprints cannot alone support established clinical recommendations.
+  - id: INV-006
+    rule: Retracted evidence cannot positively support a current clinical claim.
+  - id: INV-007
+    rule: Patient-specific actionable output must pass the Level C safety path.

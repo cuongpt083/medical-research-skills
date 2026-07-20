@@ -1,0 +1,102 @@
+# Skill: fulltext-retrieval
+
+## Purpose
+Resolve the best legally/technically accessible representation of a candidate source while preserving identity, version, provenance, and access limitations.
+
+## Trigger
+Invoke when a downstream task requires more than bibliographic metadata/abstract, including:
+- structured evidence extraction;
+- verification of a numerical or methodological claim;
+- risk-of-bias appraisal;
+- guideline recommendation extraction;
+- regulatory wording verification.
+
+## Inputs
+```yaml
+candidate:
+  evidence_id: string
+  title: string
+  doi: string | null
+  pmid: string | null
+  canonical_url: string | null
+  source_type: string
+  requested_version: published | accepted_manuscript | preprint | any
+retrieval_requirements:
+  full_text_required: boolean
+  tables_required: boolean
+  supplements_required: boolean
+  authoritative_copy_required: boolean
+```
+
+## Retrieval order
+1. Official/authoritative publisher, regulator, guideline body, or registry source.
+2. Public full-text repositories (e.g. biomedical repositories where applicable).
+3. Institutional/subject repositories and lawful open-access copies.
+4. Author manuscript or accepted manuscript when version is clearly labeled.
+5. Preprint only when explicitly relevant and version status is preserved.
+6. Abstract/metadata fallback when full text cannot be resolved.
+
+Retrieval location MUST NOT be used as a proxy for evidence quality.
+
+## Identity and version checks
+Before accepting a document:
+- match DOI/PMID or other stable identifier when available;
+- compare title/authors/year when identifiers are absent;
+- identify publication version;
+- detect preprint → peer-reviewed successor when possible;
+- record corrections, errata, expressions of concern, and retraction indicators if surfaced.
+
+## Output contract
+```yaml
+retrieval_result:
+  evidence_id: string
+  status: full_text | partial_text | abstract_only | unavailable
+  canonical_identity:
+    doi: string | null
+    pmid: string | null
+    title: string
+    version: string
+  artifacts:
+    primary_text_uri: string | null
+    supplement_uris: []
+  provenance:
+    retrieval_source: string
+    retrieval_timestamp: string
+    access_type: publisher | regulator | repository | manuscript | preprint | abstract
+    version_verified: boolean
+    identity_verified: boolean
+  limitations: []
+```
+
+## Quality gates
+PASS only when downstream use is compatible with available representation.
+
+Examples:
+- Abstract-only may pass for initial screening.
+- Abstract-only MUST NOT pass when verifying exact dosing language, detailed methodology, subgroup results, or nuanced guideline recommendations.
+
+## Failure / abstention rules
+Return one of:
+- `FULLTEXT_UNAVAILABLE`
+- `IDENTITY_AMBIGUOUS`
+- `VERSION_AMBIGUOUS`
+- `AUTHORITATIVE_COPY_REQUIRED`
+- `SUPPLEMENT_REQUIRED_BUT_UNAVAILABLE`
+
+Never fabricate inaccessible text.
+
+## Tool contract
+Provider adapters should implement a capability similar to:
+```text
+resolve(identifier, version_requirement) -> RetrievalCandidate[]
+fetch(candidate) -> DocumentArtifact
+verify_identity(document, expected_metadata) -> VerificationResult
+```
+
+## Audit requirements
+Persist:
+- every attempted location;
+- chosen version and reason;
+- identity checks;
+- access limitation;
+- whether extraction used full text, partial text, or abstract only.

@@ -1,0 +1,28 @@
+version: "0.5"
+http:
+  connect_timeout_seconds: 10
+  read_timeout_seconds: 30
+  user_agent_env: HTTP_USER_AGENT
+retry:
+  max_attempts: 4
+  base_delay_seconds: 0.5
+  max_delay_seconds: 20
+  jitter: true
+  retry_statuses: [429, 502, 503, 504]
+cache:
+  backend: pluggable
+  default: sqlite
+  key_components: [provider, capability, normalized_request, adapter_version]
+  ttl_seconds:
+    bibliographic_metadata: 604800
+    citation_graph: 86400
+    active_trial_status: 21600
+    guideline_metadata: 86400
+    current_regulatory_status: 3600
+privacy:
+  redact_patient_identifiers_before_external_calls: true
+  log_raw_query_text: false
+  log_query_hash: true
+observability:
+  emit_provider_metrics: true
+  emit_structured_errors: true

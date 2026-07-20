@@ -1,0 +1,65 @@
+version: "1.0-final"
+
+ResearchRun:
+  run_id: string
+  research_case_id: string
+  mode: quick|standard|deep|systematic_like
+  status: CREATED|PLANNING|RUNNING|WAITING_FOR_HUMAN|DEGRADED|COMPLETED|FAILED|CANCELLED
+  budget:
+    max_provider_calls: integer|null
+    max_documents: integer|null
+    max_fulltexts: integer|null
+    max_runtime_seconds: integer|null
+  checkpoints: [Checkpoint]
+  tasks: [ResearchTask]
+  artifacts: [ArtifactRef]
+  warnings: [string]
+  audit_events: [AuditEvent]
+
+ResearchTask:
+  task_id: string
+  skill: string
+  capability: string|null
+  state: PENDING|READY|RUNNING|WAITING|SUCCEEDED|FAILED|SKIPPED
+  dependencies: [string]
+  input_refs: [string]
+  output_refs: [string]
+  quality_gate:
+    required: boolean
+    status: PASS|FAIL|NOT_RUN
+
+Checkpoint:
+  checkpoint_id: string
+  stage: string
+  created_at: string
+  artifact_refs: [string]
+  resumable: boolean
+
+AuditEvent:
+  event_id: string
+  timestamp: string
+  actor: string
+  action: string
+  rationale: string
+  provenance_refs: [string]
+
+FinalReport:
+  report_id: string
+  research_case_id: string
+  executive_answer: string
+  question_interpretation: string
+  evidence_summary: [EvidenceSummaryItem]
+  claims: [Claim]
+  conflicts: [ConflictItem]
+  uncertainty: [string]
+  clinical_caveats: [string]
+  research_method:
+    mode: string
+    source_classes: [string]
+    search_dates: [string]
+    stopping_reason: string
+  references: [ReferenceItem]
+  audit:
+    run_id: string
+    verification_status: string
+    safety_disposition: string

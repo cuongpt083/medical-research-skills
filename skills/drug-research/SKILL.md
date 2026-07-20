@@ -1,0 +1,158 @@
+# Skill: drug-research
+
+## 1. Mission
+Produce verified drug/biologic therapeutic intelligence by separating regulatory facts, labeling, safety, efficacy evidence, and investigational status.
+
+## 2. Trigger
+Use for questions about:
+- approval/authorization;
+- indication;
+- dosing/administration;
+- contraindications/warnings;
+- safety signals;
+- interactions;
+- efficacy;
+- off-label or investigational uses;
+- new drugs or label expansions.
+
+## 3. Core principle
+A drug question is multi-domain. Never answer regulatory claims from academic publications alone.
+
+```text
+Drug identity
+→ regulatory status
+→ official labeling
+→ safety
+→ efficacy evidence
+→ trials/emerging evidence
+→ synthesis
+```
+
+## 4. Inputs
+```yaml
+drug_research_request:
+  research_case_id: string
+  drug_names: [string]
+  question_domains: [approval, indication, dose, safety, interaction, efficacy, investigational]
+  jurisdiction: [string]
+  population: [string]
+  indication_context: string | null
+  current_as_of: string
+```
+
+## 5. Drug identity resolution
+Before research, resolve:
+- generic/INN name;
+- brand names only when relevant;
+- salt/formulation;
+- route;
+- combination products;
+- development code names;
+- biologic/biosimilar identity where relevant.
+
+If identity ambiguity could change the answer, return `DRUG_IDENTITY_AMBIGUOUS`.
+
+## 6. Evidence lanes
+### Lane A — Regulatory
+Required for approval/status/indication/label claims.
+Capture:
+- jurisdiction;
+- approved indication;
+- age/population restrictions;
+- route/formulation;
+- authorization status/date when relevant;
+- official labeling status.
+
+### Lane B — Label / product information
+Required for dosing, contraindications, warnings, administration, approved-use interactions.
+
+### Lane C — Safety
+Use regulatory safety communications, pharmacovigilance information, label updates, and appropriate studies.
+Distinguish:
+- established labeled risk;
+- signal under evaluation;
+- association from observational data;
+- anecdotal/case evidence.
+
+### Lane D — Efficacy/effectiveness
+Use guidelines, systematic reviews, pivotal trials, and appropriate comparative studies.
+
+### Lane E — Investigational/emerging
+Use trial registries, preprints, conference/early publications when needed.
+Explicitly separate from approved use.
+
+## 7. Regulatory-status state model
+```yaml
+regulatory_status:
+  jurisdiction: string
+  status: approved | conditionally_approved | emergency_or_special_authorization | investigational | withdrawn | not_approved | unclear
+  indication: string
+  population: string | null
+  formulation_route: string | null
+  source_date: string
+  verified_from_authoritative_source: boolean
+```
+
+Never generalize approval across jurisdictions.
+
+## 8. Off-label/investigational guardrail
+If literature supports a use not present in verified labeling:
+- label it `OFF_LABEL_OR_INVESTIGATIONAL`;
+- do not phrase it as “approved for”;
+- distinguish clinical guideline support from regulatory approval;
+- invoke safety review if output is clinically actionable.
+
+## 9. Dose guardrail
+Dosing is context-sensitive. Require adequate context for:
+- indication;
+- age;
+- renal/hepatic function when material;
+- route/formulation;
+- interacting drugs when material.
+
+If patient-specific dose advice is requested with insufficient context, return `CLINICIAN_REVIEW_REQUIRED` rather than inventing a regimen.
+
+## 10. Provider contracts
+```yaml
+RegulatoryProvider:
+  returns: [jurisdiction, product_identity, status, indication, label_url, effective_date, provenance]
+DrugLabelProvider:
+  returns: [official_label_sections, version_date, provenance]
+SafetyProvider:
+  returns: [safety_communication, signal_status, date, provenance]
+```
+
+Academic literature providers remain separate.
+
+## 11. Stopping rules
+Stop when all requested domains have at least one appropriately authoritative source and material contradictions have been investigated.
+
+For current approval questions, do not stop until authoritative regulatory verification succeeds or status is explicitly `UNVERIFIED_CURRENT_STATUS`.
+
+## 12. Quality gates
+- DR-QG1 Drug identity resolved.
+- DR-QG2 Jurisdiction explicit for regulatory claims.
+- DR-QG3 Approval claims verified from authority.
+- DR-QG4 Approved vs off-label vs investigational use separated.
+- DR-QG5 Safety claims preserve signal certainty.
+- DR-QG6 Dose advice does not exceed available clinical context.
+
+## 13. Tests
+### DR-T1 Publication ≠ approval
+A positive phase III trial must not be described as approval.
+
+### DR-T2 Jurisdiction mismatch
+FDA approval must not be generalized to EMA/Vietnam without verification.
+
+### DR-T3 Formulation mismatch
+Approval of oral formulation must not be silently transferred to injectable formulation.
+
+### DR-T4 Patient-specific dosing
+Missing renal function for a renal-sensitive drug should trigger caution/review, not a confident personalized dose.
+
+## Cross-cutting invariants
+- Preserve provenance for every query, result, transformation, and exclusion decision.
+- Never infer evidence quality from search rank, citation count, journal prestige, or AI relevance score alone.
+- Normalize provider-specific records before downstream reasoning.
+- Do not fabricate identifiers, metadata, access status, publication status, or study results.
+- Mark uncertainty explicitly; absence of evidence is not evidence of absence.

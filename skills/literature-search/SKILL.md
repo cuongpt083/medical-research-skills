@@ -1,0 +1,212 @@
+# Skill: literature-search
+
+## 1. Mission
+Discover biomedical scholarly evidence with a reproducible, auditable, recall-aware search process.
+
+This skill finds candidate evidence. It does not perform final methodological appraisal or clinical recommendation.
+
+## 2. Trigger
+Use when the source plan requires primary studies, systematic reviews, meta-analyses, diagnostic studies, prognostic cohorts, epidemiologic evidence, or scholarly background literature.
+
+## 3. Inputs
+```yaml
+literature_search_request:
+  research_case_id: string
+  question_type: string
+  concepts:
+    population: [string]
+    intervention_or_exposure: [string]
+    comparator: [string]
+    outcomes: [string]
+    additional_concepts: [string]
+  constraints:
+    date_from: string | null
+    date_to: string | null
+    languages: [string]
+    humans_only: boolean | null
+    study_types: [string]
+    geography: [string]
+  mode: quick | standard | deep | systematic_like
+  target_source_classes: [string]
+```
+
+## 4. Output
+```yaml
+literature_search_result:
+  strategies: [SearchStrategy]
+  candidate_records: [CandidateRecord]
+  deduplication_summary: object
+  coverage_assessment: object
+  stopping_decision: object
+  limitations: [string]
+```
+
+## 5. Query construction protocol
+Build concept blocks before provider syntax.
+
+```text
+Concept A: population/problem
+AND
+Concept B: intervention/exposure/test
+AND
+Concept C: comparator (only when useful)
+AND
+Concept D: outcome (use cautiously; omission may improve recall)
+```
+
+For each concept, generate:
+1. canonical clinical term;
+2. spelling variants;
+3. abbreviations;
+4. historical/brand/generic names when relevant;
+5. controlled vocabulary terms when supported by provider;
+6. high-value synonyms only.
+
+Do not indiscriminately OR large noisy synonym lists.
+
+## 6. Search modes
+### Quick
+Goal: identify high-value recent evidence rapidly.
+- prioritize systematic reviews, guidelines-linked evidence, landmark/recent trials;
+- 1–2 high-yield providers may be sufficient;
+- stopping based on answer saturation, not exhaustive recall.
+
+### Standard
+Goal: balanced recall and precision.
+- execute at least one biomedical bibliographic source plus one complementary discovery/citation source when warranted;
+- perform query refinement after first result inspection;
+- record exclusions at category level.
+
+### Deep
+Goal: broad evidence mapping.
+- multiple complementary sources;
+- citation chaining for high-value seed papers;
+- explicit saturation check;
+- broader synonym and controlled vocabulary coverage.
+
+### Systematic-like
+Goal: reproducible high-recall search, without claiming formal systematic-review compliance unless protocol requirements are met.
+- preserve exact provider query strings and timestamps;
+- search multiple appropriate databases;
+- retain result counts and deduplication logs;
+- use explicit inclusion/exclusion criteria;
+- never label the output a systematic review merely because this mode was used.
+
+## 7. Provider abstraction
+```yaml
+LiteratureSearchProvider:
+  capabilities:
+    - keyword_search
+    - controlled_vocabulary_search
+    - filters
+    - metadata_lookup
+    - pagination
+  returns:
+    - provider_record_id
+    - title
+    - abstract
+    - authors
+    - publication_date
+    - journal
+    - doi
+    - pmid_or_equivalent
+    - publication_type
+    - source_url
+    - retrieval_timestamp
+```
+
+Typical provider classes may include biomedical bibliographic databases, multidisciplinary scholarly indexes, and machine-readable scholarly graphs. Provider names must not be hard-coded into reasoning rules.
+
+## 8. Deduplication protocol
+Apply in descending confidence:
+1. exact DOI;
+2. exact PMID/other stable identifier;
+3. normalized title + year + first author;
+4. fuzzy title match with manual/agent review for uncertain collisions.
+
+Preserve all source provenance when merging duplicates.
+
+Never merge:
+- preprint and later peer-reviewed publication without linking them as versions;
+- conference abstract and full article as identical evidence unless verified;
+- protocol and results paper.
+
+## 9. Screening protocol
+### Stage A — metadata/abstract screening
+Classify each candidate:
+- include;
+- exclude;
+- maybe/full-text-needed.
+
+### Stage B — full-text eligibility
+Use explicit criteria from the ResearchCase.
+
+Every exclusion should have a reason code, e.g.:
+- WRONG_POPULATION
+- WRONG_INTERVENTION
+- WRONG_OUTCOME
+- WRONG_STUDY_DESIGN
+- NON_HUMAN
+- DUPLICATE
+- NOT_PRIMARY_OR_SYNTHESIS_EVIDENCE
+- OUTSIDE_DATE_SCOPE
+- INSUFFICIENT_INFORMATION
+
+## 10. Query refinement loop
+After initial retrieval:
+1. inspect highly relevant and false-positive records;
+2. identify missing terminology and noisy terms;
+3. adjust concept blocks;
+4. re-run only when expected information gain is material;
+5. log strategy version changes.
+
+## 11. Stopping rules
+Stop when one of the following is met:
+- `QUICK_SATURATION`: additional search is unlikely to change a learning-oriented answer materially;
+- `EVIDENCE_SATURATION`: successive query/citation expansion yields no new high-value evidence classes or material claims;
+- `SOURCE_PLAN_COMPLETE`: all mandatory source classes have been searched adequately;
+- `RESOURCE_BOUND`: user-defined time/depth limit reached, with limitations declared.
+
+Do not stop solely because a fixed number of papers was found.
+
+## 12. Quality gates
+### LS-QG1 Query fidelity
+Search concepts accurately represent the structured question.
+
+### LS-QG2 Reproducibility
+Exact provider query or equivalent structured parameters are preserved.
+
+### LS-QG3 Coverage
+Mandatory source classes in the source plan were attempted or marked unavailable.
+
+### LS-QG4 Dedup integrity
+Duplicate/version handling preserves provenance and does not collapse distinct evidence objects.
+
+### LS-QG5 Search humility
+Coverage limitations and unavailable databases are disclosed.
+
+## 13. Failure / abstention
+Return:
+- `SEARCH_SCOPE_UNCLEAR` when ambiguity materially changes retrieval;
+- `SOURCE_UNAVAILABLE` when a required source cannot be searched;
+- `INSUFFICIENT_RECALL_CONFIDENCE` when the requested depth cannot be supported by available search coverage.
+
+## 14. Test cases
+### LS-T1 Therapy
+PICO for anticoagulants in AF should generate population + drug terms, avoid mandatory outcome filtering if it harms recall, and prioritize RCT/systematic evidence.
+
+### LS-T2 Drug synonym
+A drug with generic, development code, and brand names should be searched across verified synonyms without mixing unrelated compounds.
+
+### LS-T3 Preprint version
+A preprint and final journal article should be linked as versions, not counted as two independent studies.
+
+### LS-T4 Systematic-like claim
+Even with multi-database search, output must not claim “systematic review” unless protocol-level requirements are satisfied.
+
+## Cross-cutting invariants
+- Preserve provenance for every query, result, transformation, and exclusion decision.
+- Never infer evidence quality from search rank, citation count, journal prestige, or AI relevance score alone.
+- Normalize provider-specific records before downstream reasoning.
+- Do not fabricate identifiers, metadata, access status, publication status, or study results.
+- Mark uncertainty explicitly; absence of evidence is not evidence of absence.

@@ -1,0 +1,82 @@
+version: 0.3
+contracts:
+  SearchStrategy:
+    required: [id, provider_class, query_version, executed_at, query_representation]
+    fields:
+      id: string
+      provider_class: string
+      provider_name: string|null
+      query_version: integer
+      executed_at: datetime
+      query_representation: object|string
+      filters: object
+      result_count: integer|null
+      parent_strategy_id: string|null
+      refinement_reason: string|null
+
+  CandidateRecord:
+    required: [id, title, provenance]
+    fields:
+      id: string
+      title: string
+      abstract: string|null
+      authors: array
+      publication_date: string|null
+      journal: string|null
+      doi: string|null
+      pmid: string|null
+      registry_id: string|null
+      publication_type: string|null
+      version_status: string|null
+      screening_status: include|exclude|maybe|null
+      exclusion_reason: string|null
+      provenance: array
+
+  GuidelineRecord:
+    required: [id, title, issuing_body, status, provenance]
+    fields:
+      id: string
+      title: string
+      issuing_body: string
+      jurisdiction: string|null
+      publication_date: string|null
+      last_update_date: string|null
+      version: string|null
+      status: current|superseded|archived|unclear
+      official_url: string|null
+      replacement_guideline: string|null
+      recommendations: array
+      provenance: array
+
+  DrugRegulatoryStatus:
+    required: [drug_identity, jurisdiction, status, verified_from_authoritative_source]
+    fields:
+      drug_identity: object
+      jurisdiction: string
+      status: approved|conditionally_approved|emergency_or_special_authorization|investigational|withdrawn|not_approved|unclear
+      indication: string|null
+      population: string|null
+      formulation_route: string|null
+      effective_date: string|null
+      verified_from_authoritative_source: boolean
+      provenance: array
+
+  EmergingEvidenceItem:
+    required: [id, maturity, provenance]
+    fields:
+      id: string
+      maturity: object
+      registry_id: string|null
+      preprint_id: string|null
+      linked_publication_ids: array
+      regulatory_status: string|null
+      provenance: array
+
+  CitationEdge:
+    required: [source_id, target_id, relationship_type, provenance]
+    fields:
+      source_id: string
+      target_id: string
+      relationship_type: cites|cited_by|related|co_cited|bibliographic_coupling
+      provider_score: number|null
+      provenance: array

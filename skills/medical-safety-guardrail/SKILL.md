@@ -1,0 +1,71 @@
+# Skill: medical-safety-guardrail
+
+## Purpose
+Apply a final safety and epistemic-governance gate before medical research output is delivered.
+
+## Scope
+This skill does not replace clinician judgment. It determines whether the research output is appropriately framed for its intended use.
+
+## Inputs
+- user intent/audience;
+- final claims and verification status;
+- evidence maturity/confidence;
+- guideline/regulatory context;
+- patient-specific context if any.
+
+## Risk classification
+### Level A — Educational / non-actionable
+Examples:
+- mechanism explanation;
+- historical review;
+- evidence overview without patient-specific instruction.
+
+### Level B — Clinically relevant but general
+Examples:
+- guideline summary;
+- comparative treatment evidence;
+- adverse-effect review.
+
+Requires calibrated caveats and current authoritative verification where applicable.
+
+### Level C — Patient-specific / actionable
+Examples:
+- diagnosis inference;
+- dose selection;
+- starting/stopping/changing treatment;
+- urgent triage;
+- contraindication judgment for an individual.
+
+Requires clinician-level context and should be marked `CLINICIAN_REVIEW_REQUIRED`; the research agent must not silently convert general evidence into individualized directives.
+
+## Safety checks
+- Are all material clinical claims citation-verified?
+- Is current guideline/regulatory status required and verified?
+- Is preliminary evidence clearly labeled?
+- Are contraindications/major limitations omitted in a way that could mislead?
+- Is uncertainty calibrated?
+- Is population-level evidence being generalized to an individual?
+- Does the answer conflict with authoritative guidance? If yes, is conflict explicitly explained?
+- Is there an urgent/high-risk scenario requiring immediate professional evaluation rather than literature research?
+
+## Output
+```yaml
+safety_review:
+  disposition: SAFE_TO_PUBLISH | PUBLISH_WITH_CAVEATS | CLINICIAN_REVIEW_REQUIRED | BLOCK_UNTIL_VERIFIED
+  risk_level: A | B | C
+  required_caveats: []
+  blocked_claim_ids: []
+  reasons: []
+```
+
+## Blocking conditions
+Use `BLOCK_UNTIL_VERIFIED` when:
+- a material recommendation depends on an unverified citation;
+- current approval/label/guideline status is unknown but central;
+- preliminary evidence is being presented as established practice;
+- a known major contradiction is omitted.
+
+## Communication rules
+- State what is known, uncertain, and not established.
+- Do not hide behind a generic disclaimer when a specific evidence limitation can be explained.
+- Do not imply that a disclaimer makes an unsupported recommendation acceptable.

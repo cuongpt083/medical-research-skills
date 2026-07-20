@@ -1,0 +1,22 @@
+version: 0.4
+contracts:
+  ResearchCase:
+    required: [id, original_question, question, intent, status]
+    fields:
+      id: string
+      original_question: string
+      intent: string
+      status: string
+      question: object
+      research_plan: object
+      source_plan: object
+      evidence_items: array
+      claims: array
+      unresolved_questions: array
+      quality_gates: object
+  SourcePlanItem:
+    required: [source_class, priority, purpose, required, query_mode, verification_level]
+  Claim:
+    required: [id, text, claim_type, supporting_evidence_ids, confidence]
+  EvidenceItem:
+    required: [id, bibliographic, source, status, provenance]

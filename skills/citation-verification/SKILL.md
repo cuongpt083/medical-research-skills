@@ -1,0 +1,77 @@
+# Skill: citation-verification
+
+## Purpose
+Verify that every material claim is supported by the cited source at the required level of specificity.
+
+## Unit of verification
+Verification is claim-level, not bibliography-level.
+
+A paper merely being relevant to a topic does not mean it supports a particular sentence.
+
+## Inputs
+- claim object;
+- supporting/contradicting evidence items;
+- extracted facts and source locators;
+- publication/version metadata.
+
+## Verification checks
+### Identity
+- citation resolves to intended source;
+- DOI/PMID/title/version consistent.
+
+### Entailment
+- cited source actually supports the claim wording;
+- population/intervention/comparator/outcome/timeframe match;
+- causal language does not exceed design;
+- subgroup results are labeled as subgroup results.
+
+### Numerical integrity
+- number and units match;
+- denominator/time point match;
+- adjusted/unadjusted estimate correctly represented;
+- CI/p-value/effect-measure type preserved.
+
+### Provenance
+- primary source preferred for high-impact factual/numerical claims when available;
+- secondary AI summaries are not accepted as final evidence provenance;
+- regulatory/guideline claims trace to authoritative documents where required.
+
+### Publication integrity
+When material, check:
+- retraction;
+- expression of concern;
+- correction/erratum;
+- preprint superseded by peer-reviewed version.
+
+## Output
+```yaml
+citation_verification:
+  claim_id: string
+  status: verified | partially_verified | failed | unverifiable
+  checks:
+    identity: pass | fail | unclear
+    entailment: pass | fail | partial
+    numerical_integrity: pass | fail | not_applicable
+    provenance: pass | fail | partial
+    publication_integrity: pass | fail | unclear
+  verified_evidence_ids: []
+  rejected_evidence_ids: []
+  required_revision: string | null
+```
+
+## Quality gate
+No material clinical claim with `failed`, `unverifiable`, or unresolved `partially_verified` status may be published as established fact.
+
+Allowed remediation:
+1. weaken/re-scope the claim;
+2. replace citation;
+3. obtain full text;
+4. search for stronger evidence;
+5. explicitly report uncertainty.
+
+## Hard failures
+- fabricated/nonexistent citation;
+- citation does not entail claim;
+- numerical mismatch that changes interpretation;
+- retracted evidence used positively without explicit historical context;
+- unsupported regulatory approval claim.

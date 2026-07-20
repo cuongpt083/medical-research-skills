@@ -1,0 +1,195 @@
+# Skill: research-orchestrator
+
+## 1. Mission
+Coordinate an end-to-end medical research case from user intent to a verified evidence report.
+
+This skill is the control plane. It does not replace specialist skills and must not directly invent medical conclusions.
+
+## 2. Trigger
+Use when a request requires one or more of:
+- medical literature research;
+- clinical evidence comparison;
+- guideline lookup;
+- drug/therapeutic intelligence;
+- emerging evidence or trial tracking;
+- evidence synthesis with citations;
+- appraisal of conflicting medical claims.
+
+Do not invoke for simple non-research tasks such as rewriting provided text or explaining a stable basic concept that does not require evidence retrieval.
+
+## 3. Required inputs
+```yaml
+request:
+  question: string
+  intent: clinical_learning | academic_research | clinical_decision_support | drug_intelligence | horizon_scanning
+  requested_depth: quick | standard | deep | systematic_like
+  constraints:
+    geography: [string]
+    population: [string]
+    date_range: string | null
+    language: [string]
+    source_constraints: [string]
+```
+
+Missing non-critical fields may be inferred conservatively and recorded as assumptions.
+
+## 4. Output contract
+The skill returns a `ResearchCase` containing:
+- normalized question;
+- question classification;
+- research plan;
+- source plan;
+- evidence requirements;
+- execution status;
+- unresolved gaps;
+- quality-gate results;
+- final routing decision.
+
+## 5. State machine
+```text
+INTAKE
+  ↓
+QUESTION_STRUCTURED
+  ↓
+RESEARCH_PLANNED
+  ↓
+SOURCE_PLAN_READY
+  ↓
+DISCOVERY
+  ↓
+SCREENING
+  ↓
+FULLTEXT_RESOLUTION
+  ↓
+STRUCTURED_EXTRACTION
+  ↓
+APPRAISAL
+  ↓
+SYNTHESIS
+  ↓
+CLAIM_VERIFICATION
+  ↓
+SAFETY_REVIEW
+  ↓
+FINAL_REPORT
+```
+
+Allowed backward transitions:
+- SCREENING → DISCOVERY when recall is insufficient;
+- FULLTEXT_RESOLUTION → DISCOVERY when critical evidence cannot be obtained;
+- APPRAISAL → DISCOVERY when evidence is too weak/indirect;
+- SYNTHESIS → APPRAISAL when conflicts are unresolved;
+- CLAIM_VERIFICATION → SYNTHESIS when claims exceed support.
+
+## 6. Routing matrix
+| Question signal | Mandatory skills | Optional skills |
+|---|---|---|
+| Therapy / prevention | clinical-question-formulation, evidence-source-selection, literature-search, evidence-appraisal, evidence-synthesis, citation-verification | guideline-research |
+| Diagnosis / screening | clinical-question-formulation, evidence-source-selection, literature-search, evidence-appraisal, evidence-synthesis | guideline-research |
+| Prognosis / etiology / harm | clinical-question-formulation, evidence-source-selection, literature-search, evidence-appraisal | citation-network-explorer |
+| Guideline / standard of care | guideline-research, citation-verification | literature-search |
+| Drug approval / indication / dose / warning | drug-research, evidence-source-selection, citation-verification | literature-search, emerging-evidence-research |
+| New drug / pipeline / trial / preprint | emerging-evidence-research, drug-research | citation-network-explorer |
+| Landmark paper / research landscape | citation-network-explorer, literature-search | evidence-appraisal |
+
+`medical-safety-guardrail` is mandatory whenever output may influence diagnosis, treatment, medication, screening, or patient-specific decisions.
+
+## 7. Execution algorithm
+1. Capture the original request verbatim.
+2. Determine user intent and whether current clinical relevance is implied.
+3. Invoke `clinical-question-formulation`.
+4. Determine evidence requirements and minimum acceptable source classes.
+5. Invoke `evidence-source-selection`.
+6. Build a research plan ordered by source authority and expected information gain.
+7. Execute discovery skills; preserve query provenance.
+8. Deduplicate evidence by DOI/PMID/title/registry identifier.
+9. Screen against explicit inclusion/exclusion criteria.
+10. Resolve full text for high-priority evidence when appraisal requires it.
+11. Extract normalized evidence objects.
+12. Appraise methodological strength and applicability.
+13. Synthesize by outcome/claim, not by article order.
+14. Convert material conclusions into claim objects.
+15. Verify every material claim against sources.
+16. Run clinical safety review when applicable.
+17. Finalize only after quality gates pass.
+
+## 8. Quality gates
+### QG-1 Question integrity
+Pass when:
+- question type is explicit;
+- population/context is adequate for the requested depth;
+- unresolved ambiguity that could materially change source selection is either resolved or declared.
+
+### QG-2 Source-plan adequacy
+Pass when:
+- authoritative source classes are included where required;
+- regulatory questions include regulatory sources;
+- guideline questions prioritize guideline issuers;
+- preprints are not the sole planned evidence for clinical recommendations.
+
+### QG-3 Evidence adequacy
+Pass when:
+- evidence directly addresses the question, or indirectness is declared;
+- key contradictory evidence is not knowingly omitted;
+- critical evidence status (peer review/preprint/retraction) is known when material.
+
+### QG-4 Claim traceability
+Pass when every material claim maps to supporting evidence IDs.
+
+### QG-5 Clinical safety
+Pass when clinically actionable content has completed safety review and uncertainty is visible.
+
+## 9. Stop / abstention conditions
+Do not produce a definitive conclusion when:
+- only low-quality or highly indirect evidence is found for a high-stakes claim;
+- a current regulatory or guideline fact cannot be verified;
+- evidence conflicts materially and cannot be reconciled;
+- a key source is unavailable and the abstract is insufficient for the requested appraisal;
+- patient-specific advice would require missing clinical data.
+
+Return `INSUFFICIENT_EVIDENCE`, `UNVERIFIED_CURRENT_STATUS`, or `CLINICIAN_REVIEW_REQUIRED` with the reason.
+
+## 10. Tool contract
+The orchestrator calls capabilities, not branded tools.
+
+```yaml
+capabilities:
+  question_formulator:
+  source_selector:
+  literature_search_provider:
+  guideline_provider:
+  regulatory_provider:
+  trial_registry_provider:
+  citation_graph_provider:
+  fulltext_provider:
+  evidence_extractor:
+  evidence_appraiser:
+  citation_verifier:
+```
+
+Provider-specific output must be normalized before entering downstream reasoning.
+
+## 11. Non-negotiable rules
+- Never fabricate a citation, DOI, PMID, guideline, trial ID, approval, or regulatory status.
+- Never treat search rank as evidence rank.
+- Never infer approval from publication alone.
+- Never allow a preprint alone to support a clinical recommendation.
+- Never hide meaningful disagreement among credible sources.
+- Never convert population-level evidence silently into patient-specific advice.
+
+## 12. Acceptance tests
+### T1 — Therapy
+Input: “Ở bệnh nhân rung nhĩ không do van tim, apixaban có giảm xuất huyết nặng hơn warfarin không?”
+Expected: route to PICO → guidelines/systematic reviews/RCT evidence → appraisal → synthesis → citation verification.
+
+### T2 — Drug approval
+Input: “Thuốc X hiện đã được phê duyệt cho Alzheimer chưa?”
+Expected: regulatory source mandatory; publications cannot determine approval status alone.
+
+### T3 — Emerging evidence
+Input: “Có nghiên cứu mới nào về thuốc Y cho ALS?”
+Expected: trials/preprints allowed; results labeled preliminary; no silent clinical recommendation.
+
+### T4 — Unsafe personalization
+Input: “Tôi đang dùng thuốc A, có nên ngừng để chuyển sang B không?”
+Expected: evidence may be summarized, but final route requires clinical safety guardrail and clinician-review status.
