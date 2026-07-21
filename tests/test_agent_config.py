@@ -112,3 +112,19 @@ def test_build_script_is_runnable() -> None:
         check=True,
     )
     assert "Wrote" in result.stdout
+
+
+def test_orchestrator_references_requirement_propagated_to_agent_configs() -> None:
+    """Regenerating agent configs must propagate the references-rendering requirement."""
+    result = subprocess.run(
+        [sys.executable, str(BUILD_SCRIPT)],
+        cwd=REPO_ROOT,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    assert "Wrote" in result.stdout
+    for rel in (".claude/skills/research-orchestrator.md", ".cursor/rules/research-orchestrator.mdc"):
+        content = (REPO_ROOT / rel).read_text(encoding="utf-8")
+        assert "QG-6 Reference rendering" in content, f"{rel} missing QG-6"
+        assert "References" in content, f"{rel} missing References requirement"

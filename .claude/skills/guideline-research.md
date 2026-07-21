@@ -13,6 +13,11 @@ tags:
 >
 > This file is auto-generated. Edit `skills/guideline-research/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: guideline-research
+description: Locate, verify, compare, and extract current authoritative clinical practice guidance relevant to a medical question. Use for standard-of-care, recommended management, diagnosis, screening, and treatment pathways.
+---
+
 # Skill: guideline-research
 
 ## 1. Mission

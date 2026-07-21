@@ -13,6 +13,11 @@ tags:
 >
 > This file is auto-generated. Edit `skills/evidence-synthesis/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: evidence-synthesis
+description: Combine appraised evidence into calibrated, traceable conclusions without flattening disagreement, uncertainty, or evidence maturity. Use after evidence extraction and appraisal.
+---
+
 # Skill: evidence-synthesis
 
 ## Purpose

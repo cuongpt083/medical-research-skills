@@ -13,6 +13,11 @@ tags:
 >
 > This file is auto-generated. Edit `skills/evidence-appraisal/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: evidence-appraisal
+description: Evaluate methodological credibility, risk of bias, internal validity, and applicability of evidence items using study design-appropriate criteria (e.g. ROBINS-I, RoB 2, AGREE II).
+---
+
 # Skill: evidence-appraisal
 
 ## Purpose

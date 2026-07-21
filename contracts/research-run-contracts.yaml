@@ -43,7 +43,37 @@ AuditEvent:
   rationale: string
   provenance_refs: [string]
 
+ReferenceItem:
+  id: string
+  kind: peer_reviewed_article | preprint | systematic_review | meta_analysis | guideline | regulatory_document | trial_registry | other
+  title: string
+  authors: [string]
+  journal_or_source: string|null
+  publication_date: string|null
+  identifiers:
+    doi: string|null
+    pmid: string|null
+    pmcid: string|null
+    openalex_id: string|null
+    semantic_scholar_id: string|null
+    clinicaltrials_gov_id: string|null
+    guideline_id: string|null
+    official_url: string|null
+    identifier_unavailable: boolean
+  url: string|null
+  publication_status:
+    peer_reviewed: boolean|null
+    preprint: boolean|null
+    retracted: boolean|null
+    corrected: boolean|null
+    regulatory: boolean|null
+    guideline: boolean|null
+  access_status: string|null
+  cited_by_claim_ids: [string]
+  provenance: [object]
+
 FinalReport:
+  required: [report_id, research_case_id, executive_answer, references, audit]
   report_id: string
   research_case_id: string
   executive_answer: string

@@ -137,4 +137,5 @@ A run may be `COMPLETED` only when:
 - claims synthesized;
 - citations verified;
 - safety review passed;
+- references section rendered with stable identifiers and inline citation markers for every material claim;
 - final report generated with uncertainty and caveats.

@@ -13,6 +13,11 @@ tags:
 >
 > This file is auto-generated. Edit `skills/medical-safety-guardrail/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: medical-safety-guardrail
+description: Apply final safety and epistemic-governance gate before medical research output is delivered. Ensures appropriate framing, safety disclaimers, evidence maturity warnings, and non-clinical authority posture.
+---
+
 # Skill: medical-safety-guardrail
 
 ## Purpose

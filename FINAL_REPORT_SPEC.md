@@ -10,7 +10,7 @@ Mandatory sections:
 6. **Uncertainty** — unknown, indirect, imprecise, outdated or preliminary evidence.
 7. **Clinical caveats** — distinguish population-level evidence from patient-specific decisions.
 8. **Research method** — mode, source classes, dates, stopping rule, degraded lanes.
-9. **References** — authoritative/primary sources preferred for material claims.
+9. **References** — a rendered, human-readable citation list with one entry per evidence item cited by at least one material claim. Each entry must include a stable reference ID, at least one persistent identifier (DOI/PMID/PMCID/OpenAlex/Semantic Scholar/ClinicalTrials.gov/guideline ID/official URL) or an explicit `identifier_unavailable` status with provenance, bibliographic metadata (authors, title, journal/source, publication date), and a publication-status label (peer-reviewed, preprint, guideline, regulatory, trial registry, retracted, corrected). Every material claim must carry inline citation markers resolving to entries in this section. Entries are deduplicated by persistent identifier; topic-related but non-supportive references are excluded. A final report with material claims but an empty or missing `References` section must not be published.
 10. **Verification & safety** — citation status, preprint/regulatory/guideline caveats, safety disposition.
 
 Forbidden:

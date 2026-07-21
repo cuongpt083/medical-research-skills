@@ -11,6 +11,11 @@ alwaysApply: false
 >
 > This file is auto-generated. Edit `skills/fulltext-retrieval/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: fulltext-retrieval
+description: Resolve the best accessible full-text representation of candidate sources while preserving identity, version, provenance, and access limitations. Use when detailed evidence extraction, numerical verification, or risk-of-bias appraisal is needed.
+---
+
 # Skill: fulltext-retrieval
 
 ## Purpose

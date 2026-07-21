@@ -156,6 +156,8 @@ Every material claim must have one or more evidence references.
 
 For high-impact clinical claims, the system should prefer at least one primary or authoritative source instead of relying solely on an AI-generated summary or secondary aggregator.
 
+Traceability must be made visible to the end user, not only kept as internal evidence IDs. The final report must include a rendered `References` section (one human-readable entry per cited evidence item, with stable reference ID, persistent identifier, bibliographic metadata, and publication-status label) and every material claim must carry inline citation markers resolving to those entries. A report that contains material claims but no rendered `References` section fails the reference-rendering quality gate and must not be published as established fact.
+
 ---
 
 ## 8. Retraction and correction policy

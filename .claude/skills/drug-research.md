@@ -14,6 +14,11 @@ tags:
 >
 > This file is auto-generated. Edit `skills/drug-research/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: drug-research
+description: Produce verified drug and biologic therapeutic intelligence by separating regulatory facts, labeling, safety, efficacy evidence, contraindications, and off-label/investigational status. Use for approval, indication, dosing, safety warnings, and drug interactions.
+---
+
 # Skill: drug-research
 
 ## 1. Mission

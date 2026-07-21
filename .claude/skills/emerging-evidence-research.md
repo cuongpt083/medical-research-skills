@@ -14,6 +14,11 @@ tags:
 >
 > This file is auto-generated. Edit `skills/emerging-evidence-research/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: emerging-evidence-research
+description: Detect, track, and contextualize early or evolving medical evidence without overstating maturity. Use for active clinical trials, pipeline drugs, preprints, conference findings, and horizon scanning.
+---
+
 # Skill: emerging-evidence-research
 
 ## 1. Mission

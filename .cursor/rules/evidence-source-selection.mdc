@@ -12,6 +12,11 @@ alwaysApply: false
 >
 > This file is auto-generated. Edit `skills/evidence-source-selection/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: evidence-source-selection
+description: Select source classes (peer-reviewed, guidelines, regulatory, trials, preprints) and retrieval order fit for the question, evidence purpose, clinical stakes, and recency requirements. Invoke after question formulation and before research execution.
+---
+
 # Skill: evidence-source-selection
 
 ## 1. Mission

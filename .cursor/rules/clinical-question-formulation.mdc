@@ -11,6 +11,11 @@ alwaysApply: false
 >
 > This file is auto-generated. Edit `skills/clinical-question-formulation/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: clinical-question-formulation
+description: Transform a medical information need into a precise, researchable evidence question (PICO/PEO/PICOT) without introducing bias or false assumptions. Use before evidence retrieval when questions are clinical, therapeutic, diagnostic, prognostic, etiologic, safety, or drug-related.
+---
+
 # Skill: clinical-question-formulation
 
 ## 1. Mission

@@ -86,6 +86,7 @@ Invoke the appropriate skill from `.claude/skills/` based on the task:
 - Never allow a preprint alone to support a clinical recommendation.
 - Never hide meaningful disagreement among credible sources.
 - Never convert population-level evidence silently into patient-specific advice.
+- Never publish a final report containing material claims without a rendered `References` section and inline citation markers resolving to those references.
 
 ## Quality gates
 
@@ -96,6 +97,7 @@ Before finalizing any research output, ensure:
 3. Evidence adequacy — directly addresses question or declares indirectness; contradictory evidence not omitted; source status known.
 4. Claim traceability — every material claim maps to supporting evidence IDs.
 5. Clinical safety — actionable content has completed safety review and uncertainty is visible.
+6. Reference rendering — the final report includes a rendered `References` section with stable identifiers, inline citation markers for every material claim, and no fabricated or topic-related-but-non-supportive references.
 
 ## Stop / abstention
 

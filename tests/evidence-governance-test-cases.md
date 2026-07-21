@@ -91,3 +91,12 @@ Expected: synthesis distinguishes statistical significance from clinical importa
 Evidence is adults, question is pediatric.
 
 Expected: directness/applicability downgraded; claim scope restricted.
+
+## EG-16 — Final report without rendered references
+Synthesis produces material clinical claims backed by internal evidence IDs, but the final report omits a human-readable References section and uses no inline citation markers.
+
+Expected:
+- QG-6 (reference rendering) fails;
+- report must not be published as established fact;
+- orchestrator compiles a rendered References section with stable identifiers and attaches inline citation markers before finalizing;
+- topic-related but non-supportive references are excluded; preprints/guidelines/regulatory/trial-registry entries are labeled.

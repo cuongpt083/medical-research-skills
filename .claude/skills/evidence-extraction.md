@@ -13,6 +13,11 @@ tags:
 >
 > This file is auto-generated. Edit `skills/evidence-extraction/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: evidence-extraction
+description: Transform source documents into structured, source-traceable evidence facts without interpretation drift. Extract reported facts, outcomes, sample sizes, and locators before synthesizing.
+---
+
 # Skill: evidence-extraction
 
 ## Purpose

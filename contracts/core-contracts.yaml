@@ -14,6 +14,7 @@ contracts:
       claims: array
       unresolved_questions: array
       quality_gates: object
+      references: array
   SourcePlanItem:
     required: [source_class, priority, purpose, required, query_mode, verification_level]
   Claim:

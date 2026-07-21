@@ -13,6 +13,11 @@ tags:
 >
 > This file is auto-generated. Edit `skills/citation-verification/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: citation-verification
+description: Verify that every material clinical claim is supported by the cited source at the required level of specificity. Ensures claim-to-source traceability and prevents citation hallucination.
+---
+
 # Skill: citation-verification
 
 ## Purpose

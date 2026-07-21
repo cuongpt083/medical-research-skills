@@ -11,6 +11,11 @@ alwaysApply: false
 >
 > This file is auto-generated. Edit `skills/citation-network-explorer/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: citation-network-explorer
+description: Expand a research landscape from seed papers using citation relationships (forward/backward citations, co-citations) and semantic similarity while controlling graph-induced bias. Use when landmark papers are known or keyword search is incomplete.
+---
+
 # Skill: citation-network-explorer
 
 ## 1. Mission

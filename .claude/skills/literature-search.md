@@ -15,6 +15,11 @@ tags:
 >
 > This file is auto-generated. Edit `skills/literature-search/SKILL.md` and run `python scripts/build-agent-configs.py` to regenerate.
 
+---
+name: literature-search
+description: Discover biomedical scholarly evidence with a reproducible, recall-aware search process across databases like PubMed, Crossref, OpenAlex, and Semantic Scholar. Use for primary studies, systematic reviews, meta-analyses, and observational cohorts.
+---
+
 # Skill: literature-search
 
 ## 1. Mission
